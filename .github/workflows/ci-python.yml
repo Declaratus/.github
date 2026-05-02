@@ -60,8 +60,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ${{ fromJson(inputs['python-versions']) }}
-        os: ${{ fromJson(inputs['os-matrix']) }}
+        python-version: ${{ fromJson(inputs.python-versions) }}
+        os: ${{ fromJson(inputs.os-matrix) }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
