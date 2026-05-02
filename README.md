@@ -7,8 +7,8 @@ Declaratus organization.
 
 ### `ci-python.yml`
 
-Reusable Python CI workflow. Runs lint (ruff), type checking (mypy), and tests (pytest)
-in a matrix across Python versions and operating systems.
+Reusable Python CI workflow. Runs lint (ruff), type checking (mypy), and tests (pytest).
+Tests run in a matrix across Python versions and operating systems.
 
 **Caller prerequisites:**
 
