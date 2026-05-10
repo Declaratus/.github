@@ -1,0 +1,39 @@
+name: CI
+
+# Real failure mode for this repo: a typo in a reusable workflow
+# breaks every consumer that calls it. actionlint runs locally per
+# PR so the break never reaches main.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  actionlint:
+    name: actionlint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: raven-actions/actionlint@v2
+
+  # Aggregate check that the org-level branch ruleset (Declaratus/governance
+  # spec 01) requires by name. `if: always()` is load-bearing: without it,
+  # a failed/skipped upstream leaves this job "skipped", which counts as a
+  # pass on a required check.
+  ci-summary:
+    name: ci-summary
+    needs: [actionlint]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify required jobs succeeded
+        run: |
+          actionlint_result='${{ needs.actionlint.result }}'
+          echo "actionlint=$actionlint_result"
+          if [ "$actionlint_result" != "success" ]; then
+            exit 1
+          fi
