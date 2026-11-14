@@ -22,23 +22,20 @@ instructions before making changes.
 1. **Fork** the repository and create a branch from `main`.
 2. **Name your branch** using a short, descriptive slug, e.g. `fix/login-timeout` or
    `feat/export-csv`.
-3. **Make your changes** in small, logical commits using Conventional Commits (see below).
-4. **Push** your branch and open a pull request against `main`.
+3. **Make your changes** in small, logical commits.
+4. **Push** your branch and open a pull request against `main`, with a Conventional Commit
+   title (see below).
 5. Address any review feedback. Once approved, a maintainer will **squash-merge** your PR.
-   Your individual commits do not need to be perfectly structured; the squash commit message
-   should follow Conventional Commits format.
+   The pull request title becomes the squash commit message and, in repositories that
+   release, the changelog entry. Your individual commits don't need any particular format.
 
-## Conventional commits
+## Pull request titles
 
-All commit messages (and the final squash-merge commit title) must follow the
-[Conventional Commits](https://www.conventionalcommits.org/) specification:
+Pull request titles follow the [Conventional Commits](https://www.conventionalcommits.org/)
+specification. A `pr-title` check enforces this in repositories that release:
 
 ```
-<type>(<optional scope>): <short summary>
-
-[optional body]
-
-[optional footer(s)]
+<type>(<optional scope>)<optional !>: <short summary>
 ```
 
 Allowed types:
@@ -50,12 +47,19 @@ Allowed types:
 | `docs` | Documentation changes only |
 | `refactor` | Code change that neither fixes a bug nor adds a feature |
 | `test` | Adding or updating tests |
-| `chore` | Build process, dependency updates, CI, tooling |
 | `perf` | Performance improvements |
+| `revert` | Reverting an earlier change |
+| `build` | Build system or packaging |
+| `style` | Formatting with no code change |
 | `ci` | Changes to CI/CD configuration |
+| `chore` | Maintenance and tooling |
 
-Breaking changes must include `BREAKING CHANGE:` in the commit footer, or append `!` after
-the type: `feat!: remove deprecated endpoint`.
+`feat`, `fix`, `perf` and `revert` appear in the changelog and start a release. The other
+types don't. Mark a breaking change with `!` after the type, as in
+`feat!: remove deprecated endpoint`. The squash commit carries only the title, so a
+`BREAKING CHANGE:` footer in the description is not seen. To list several changes from one
+pull request, see [Pull request titles](docs/releasing.md#pull-request-titles) in the release
+standard.
 
 ## Pull requests
 

@@ -35,6 +35,11 @@ jobs:
 
 ### `release-pypi.yml`
 
+Superseded by the [release standard](docs/releasing.md); don't use it in new
+repositories. It creates the GitHub Release itself, which conflicts with the
+draft release that release-please makes. A repository that publishes to PyPI
+keeps its own `release.yml` and ends it with the standard publish step.
+
 Reusable PyPI release workflow using OIDC trusted publishing (no API tokens required).
 
 **Caller prerequisites:**
@@ -71,6 +76,15 @@ jobs:
     with:
       languages: '["python"]'
 ```
+
+## Releasing
+
+Every Declaratus repository that ships versions releases the same way:
+release-please for versions, tags and the changelog, Conventional Commit pull
+request titles, and squash merges. See [docs/releasing.md](docs/releasing.md)
+for the standard and the adoption checklist. The workflows a repository copies
+are in [`workflow-templates/`](workflow-templates), and on the
+**Actions → New workflow** page of every Declaratus repository.
 
 ## Community health files
 

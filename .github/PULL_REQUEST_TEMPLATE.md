@@ -8,12 +8,18 @@
 
 ## Type of Change
 
+<!-- The pull request title is the squash commit and the changelog entry:
+     <type>(<scope>)!: <summary>. feat, fix, perf and revert appear in the
+     changelog; docs, refactor, test, build, style, ci and chore don't. -->
+
 - [ ] feat: new feature
 - [ ] fix: bug fix
+- [ ] perf: performance improvement
 - [ ] docs: documentation only
 - [ ] refactor: code refactoring (no functional change)
 - [ ] test: adding or updating tests
-- [ ] chore: maintenance, tooling, or dependency updates
+- [ ] ci / build / chore: CI, packaging, maintenance or dependency updates
+- [ ] Breaking change (`!` after the type in the title)
 
 ## Testing
 

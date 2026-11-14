@@ -1,0 +1,7 @@
+{
+  "name": "release-please",
+  "description": "Opens a release pull request from Conventional Commits and tags vX.Y.Z when it merges. Needs release-please-config.json, .release-please-manifest.json, and the org release app. See docs/releasing.md in Declaratus/.github.",
+  "iconName": "octicon tag",
+  "categories": ["Automation"],
+  "filePatterns": ["release-please-config.json$"]
+}
