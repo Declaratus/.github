@@ -1,0 +1,7 @@
+{
+  "name": "pr-title",
+  "description": "Checks that pull request titles are Conventional Commits, since the squash-merge title becomes the changelog entry. See docs/releasing.md in Declaratus/.github.",
+  "iconName": "octicon git-pull-request",
+  "categories": ["Automation"],
+  "filePatterns": ["release-please-config.json$"]
+}
