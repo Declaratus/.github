@@ -101,6 +101,9 @@ A repository that builds something has a `release.yml` that:
   doesn't report it (see below);
 - publishes to package registries with trusted publishing (OIDC) where the
   registry supports it, not stored tokens;
+- checks every built archive against an explicit list of the files it may
+  contain, and fails before anything is uploaded (see
+  [What a published archive contains](#what-a-published-archive-contains));
 - ends with this publish step, which attaches the files to the draft
   release-please made or, for a release candidate, creates a prerelease:
 
@@ -142,6 +145,43 @@ its version:
   Helm charts, container tags and npm (SemVer).
 
 Never bump version files by hand to cut a candidate. release-please owns them.
+
+### What a published archive contains
+
+Anything uploaded to a public registry or attached to a release is public,
+even when the repository is private. Each archive carries only what is needed
+to build and use the project: source, the build configuration, the README, the
+licence and the changelog. Maintainer and handoff docs, agent instructions,
+workflows, tests and their fixtures stay in the repository.
+
+- **List the files explicitly.** Don't rely on a build tool's default, which is
+  often every file git tracks. For Python with hatchling, give the source
+  archive its own list:
+
+  ```toml
+  [tool.hatch.build.targets.sdist]
+  only-include = ["src/<package>", "pyproject.toml", "README.md", "LICENSE", "CHANGELOG.md"]
+  ```
+
+  hatchling always adds the project's `.gitignore` to the source archive.
+  Allow it in the check below only if it lists nothing but build and cache
+  paths. Check the wheel too: it should hold only the package and its
+  `.dist-info`.
+- **Check the built archive, not the config.** A short script reads each built
+  archive and fails on any file outside the list, on compiled files such as
+  `.pyc`, and on anything that isn't a regular file. `release.yml` runs it
+  after building and before any upload. A CI job builds the same archives and
+  runs it on every pull request, so a packaging change fails before it reaches
+  a release.
+- **The same rule covers other published artifacts.** A container image copies
+  only what it needs (explicit `COPY` lines, or a `.dockerignore` that
+  excludes everything else), and binary archives hold only the binary, the
+  licence and the README.
+
+If an archive that is already published contains files it shouldn't, fix the
+list and release again first. Then decide whether to remove the old files.
+Yanking a package version doesn't hide its files, and a deleted filename can't
+be uploaded again.
 
 ## Configuration
 
@@ -277,6 +317,9 @@ dependencies.
       in the config, and a `release.yml` that meets
       [the contract](#the-releaseyml-contract). Remove any step that checked
       out or created the release another way.
+- [ ] Every archive it publishes has an explicit file list, and CI and
+      `release.yml` check the built archives against it
+      ([What a published archive contains](#what-a-published-archive-contains)).
 - [ ] `.github/dependabot.yml` keeps the actions current, with title
       prefixes that pass the check.
 - [ ] A hand-written changelog is ready for generated entries (below).
